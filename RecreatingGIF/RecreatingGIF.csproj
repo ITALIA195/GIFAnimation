@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>RecreatingGIF</RootNamespace>
+    <AssemblyName>Game</AssemblyName>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Update="Graphics/Shaders/**" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="OpenTK" Version="3.0.1" />
+  </ItemGroup>
+</Project>
