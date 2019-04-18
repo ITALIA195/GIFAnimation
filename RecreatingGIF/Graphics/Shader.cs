@@ -77,6 +77,8 @@ namespace RecreatingGIF.Graphics
         public void SetUniformValue(string attrib, float data)
         {
             var loc = GetUniformLocation(attrib);
+            if (loc < 0)
+                throw new Exception();
             SetUniformValue(loc, data);
         }
         
@@ -88,6 +90,8 @@ namespace RecreatingGIF.Graphics
         public void SetUniformValue(string attrib, Vector3 data)
         {
             var loc = GetUniformLocation(attrib);
+            if (loc < 0)
+                throw new Exception();
             SetUniformValue(loc, data);
         }
         
@@ -99,6 +103,8 @@ namespace RecreatingGIF.Graphics
         public void SetUniformValue(string attrib, int data)
         {
             var loc = GetUniformLocation(attrib);
+            if (loc < 0)
+                throw new Exception();
             SetUniformValue(loc, data);
         }
         
@@ -110,6 +116,8 @@ namespace RecreatingGIF.Graphics
         public void SetUniformValue(string attrib, ref Matrix4 data)
         {
             var loc = GetUniformLocation(attrib);
+            if (loc < 0)
+                throw new Exception();
             SetUniformValue(loc, ref data);
         }
         
