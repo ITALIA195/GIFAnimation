@@ -10,13 +10,16 @@ namespace RecreatingGIF.Graphics.Objects
         private readonly Buffers _buffers;
 
         private readonly float[] _vertices = new float[3 * NumberOfBoxes * NumberOfBoxes];
-        
+        private int _shaderTimeLocation;
+        private float _time;
+
         public Rectangle(Shader shader)
         {
             _shader = shader;
             _buffers = new Buffers(Buffer.VertexBuffer | Buffer.VertexArray);
             
             BindData();
+            SendMatries();
         }
 
         private void BindData()
@@ -57,13 +60,11 @@ namespace RecreatingGIF.Graphics.Objects
             
             GL.BindBuffer(BufferTarget.ArrayBuffer, _buffers.VertexBuffer);
         }
-        
-        private float anim;
-        public void Draw()
+
+        private void SendMatries()
         {
             _shader.Use();
-
-            anim += 0.03f;
+            
             var projection = Matrix4.Identity;
             var view = Matrix4.Identity;
             var model = Matrix4.Identity;
@@ -77,15 +78,25 @@ namespace RecreatingGIF.Graphics.Objects
 
 //            projection *= Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver2, Window.AspectRatio, 1f, 50f);
 
-            _shader.SetUniformValue("animation", anim);
             _shader.SetUniformValue("centerOfAnimation", new Vector3(0, 0, 0));
             _shader.SetUniformValue("projection", ref projection);
             _shader.SetUniformValue("view", ref view);
             _shader.SetUniformValue("model", ref model);
-            
-            
+
+            _shaderTimeLocation = _shader.GetUniformLocation("animation");
+        }
+
+        public void Draw()
+        {
             GL.BindVertexArray(_buffers.VertexArray);
             GL.DrawArrays(PrimitiveType.Points, 0, NumberOfBoxes * NumberOfBoxes);
+        }
+
+        public void Update()
+        {
+            _time += 0.03f;
+            
+            _shader.SetUniformValue("animation", _time);
         }
     }
 }

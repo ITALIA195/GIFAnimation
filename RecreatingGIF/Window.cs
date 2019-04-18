@@ -11,7 +11,6 @@ namespace RecreatingGIF
     public class Window : GameWindow
     {
         private Rectangle _rectangle;
-        private float _angle;
         
         public Window() : base(
             1280,
@@ -51,7 +50,7 @@ namespace RecreatingGIF
             if (keyboard.IsKeyDown(Key.Q))
                 Exit();
 
-            _angle += 0.1f;
+            _rectangle.Update();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
