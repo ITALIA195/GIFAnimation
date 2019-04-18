@@ -1,22 +1,36 @@
 #version 330 core
 
-const vec3 TOP_COLOR = vec3(0.53f, 0.72f, 0.71f);
-const vec3 LEFT_COLOR = vec3(0.90f, 0.88f, 0.69f);
-const vec3 RIGHT_COLOR = vec3(0.25f, 0.32f, 0.51f);
+const vec3 TOP_COLOR = vec3(0.52f, 0.73f, 0.71f);
+const vec3 LEFT_COLOR = vec3(0.25f, 0.33f, 0.52f);
+const vec3 RIGHT_COLOR = vec3(0.90f, 0.89f, 0.69f);
 
-const float minHeight = 0.2;
-const float deltaHeight = 0.8;
+const float maxDistance = 100;
+const float minHeight = 2;
+const float deltaHeight = 4;
 
+uniform mat4 model;
 uniform mat4 view;
+uniform mat4 projection;
+
+uniform vec3 centerOfAnimation;
+uniform float animation;
 
 layout (points) in;
 layout (triangle_strip, max_vertices = 24) out;
 
 out vec3 vColor;
 
+
 void sendOffset(vec3 amount) {
-    amount *= 0.5;
-    gl_Position = view * (gl_in[0].gl_Position + vec4(amount, 0));
+    float d = distance(centerOfAnimation, gl_in[0].gl_Position.xyz);
+    float ratio = d / maxDistance;
+    
+    float multY = (1 - sin(animation)) * deltaHeight + minHeight; 
+    
+    vec4 vertex = gl_in[0].gl_Position;
+    vertex += vec4(amount, 0);
+    vertex *= vec4(1, multY, 1, 1);
+    gl_Position = projection * view * model * vertex;
     EmitVertex();
 }
 
@@ -40,7 +54,7 @@ void main() {
     EndPrimitive();
 
     // Left Face
-    vColor = LEFT_COLOR;
+    vColor = RIGHT_COLOR;
     sendOffset(vec3(-1.0, +1.0, +1.0));
     sendOffset(vec3(-1.0, -1.0, +1.0));
     sendOffset(vec3(-1.0, +1.0, -1.0));
@@ -49,7 +63,7 @@ void main() {
     EndPrimitive();
     
     // Right Face
-    vColor = LEFT_COLOR;
+    vColor = RIGHT_COLOR;
     sendOffset(vec3(+1.0, +1.0, -1.0));
     sendOffset(vec3(+1.0, -1.0, -1.0));
     sendOffset(vec3(+1.0, +1.0, +1.0));
@@ -58,7 +72,7 @@ void main() {
     EndPrimitive();
     
     // Front Face
-    vColor = RIGHT_COLOR;
+    vColor = LEFT_COLOR;
     sendOffset(vec3(-1.0, +1.0, +1.0));
     sendOffset(vec3(-1.0, -1.0, +1.0));
     sendOffset(vec3(+1.0, +1.0, +1.0));
@@ -67,7 +81,7 @@ void main() {
     EndPrimitive();
 
     // Back Face
-    vColor = RIGHT_COLOR;
+    vColor = LEFT_COLOR;
     sendOffset(vec3(-1.0, +1.0, -1.0));
     sendOffset(vec3(-1.0, -1.0, -1.0));
     sendOffset(vec3(+1.0, +1.0, -1.0));

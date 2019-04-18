@@ -4,6 +4,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using RecreatingGIF.Graphics;
+using RecreatingGIF.Graphics.Objects;
 
 namespace RecreatingGIF
 {
@@ -32,7 +33,7 @@ namespace RecreatingGIF
 
         protected override void OnLoad(EventArgs e)
         {
-            GL.ClearColor(Color4.DarkSlateGray);
+            GL.ClearColor(0.98f, 0.98f, 0.98f, 1f);
             GL.Enable(EnableCap.DepthTest);
 
             _rectangle = new Rectangle(new Shader("main"));
@@ -62,5 +63,7 @@ namespace RecreatingGIF
             GL.Flush();
             SwapBuffers();
         }
+
+        public static float AspectRatio => 1280f / 720f;
     }
 }

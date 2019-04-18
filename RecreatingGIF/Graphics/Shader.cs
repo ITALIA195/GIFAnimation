@@ -74,11 +74,45 @@ namespace RecreatingGIF.Graphics
             return GL.GetAttribLocation(_handle, attrib);
         }
 
-        public void SetUniformValue(int location, int data)
+        public void SetUniformValue(string attrib, float data)
+        {
+            var loc = GetUniformLocation(attrib);
+            SetUniformValue(loc, data);
+        }
+        
+        public void SetUniformValue(int location, float data)
         {
             GL.Uniform1(location, data);
         }
 
+        public void SetUniformValue(string attrib, Vector3 data)
+        {
+            var loc = GetUniformLocation(attrib);
+            SetUniformValue(loc, data);
+        }
+        
+        public void SetUniformValue(int location, Vector3 data)
+        {
+            GL.Uniform3(location, data);
+        }
+
+        public void SetUniformValue(string attrib, int data)
+        {
+            var loc = GetUniformLocation(attrib);
+            SetUniformValue(loc, data);
+        }
+        
+        public void SetUniformValue(int location, int data)
+        {
+            GL.Uniform1(location, data);
+        }
+        
+        public void SetUniformValue(string attrib, ref Matrix4 data)
+        {
+            var loc = GetUniformLocation(attrib);
+            SetUniformValue(loc, ref data);
+        }
+        
         public void SetUniformValue(int location, ref Matrix4 data)
         {
             GL.UniformMatrix4(location, true, ref data);
@@ -102,11 +136,12 @@ namespace RecreatingGIF.Graphics
         {
             GL.CompileShader(shader);
             
-            Console.WriteLine(GL.GetShaderInfoLog(shader));
-            
             GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
             if (code != (int) All.True)
+            {
+                Console.WriteLine(GL.GetShaderInfoLog(shader));
                 throw new Exception($"Error occurred whilst compiling Shader({shader})");
+            }
         }
 
         private static void LinkProgram(int program)
@@ -115,7 +150,10 @@ namespace RecreatingGIF.Graphics
             
             GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
             if (code != (int) All.True)
+            {
+                Console.WriteLine(GL.GetProgramInfoLog(program));
                 throw new Exception($"Error occurred whilst linking Program({program})");
+            }
         }
 
         private static string ReadFile(string file)
