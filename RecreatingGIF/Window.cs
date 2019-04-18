@@ -2,6 +2,7 @@ using System;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Input;
 using RecreatingGIF.Graphics;
 
 namespace RecreatingGIF
@@ -10,7 +11,6 @@ namespace RecreatingGIF
     {
         private Rectangle _rectangle;
         private float _angle;
-        private double _multiplier;
         
         public Window() : base(
             1280,
@@ -28,15 +28,24 @@ namespace RecreatingGIF
 
         protected override void OnLoad(EventArgs e)
         {
-            GL.ClearColor(Color4.Red);
+            GL.ClearColor(Color4.DarkSlateGray);
             
             _rectangle = new Rectangle(new Shader("main"));
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            var keyboard = Keyboard.GetState();
+            if (keyboard.IsKeyDown(Key.Escape))
+                Exit();
+            if ((keyboard.IsKeyDown(Key.AltLeft) ||
+                keyboard.IsKeyDown(Key.AltRight)) && keyboard.IsKeyDown(Key.F4))
+                Exit();
+
+            if (keyboard.IsKeyDown(Key.Q))
+                Exit();
+
             _angle += 0.1f;
-            _multiplier = Math.Sin(_angle);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
