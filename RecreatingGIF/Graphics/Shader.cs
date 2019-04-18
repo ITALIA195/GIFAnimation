@@ -11,6 +11,7 @@ namespace RecreatingGIF.Graphics
         private const string Path = @"./Graphics/Shaders/";
         private const string VertexFileFormat = ".vert";
         private const string FragmentFileFormat = ".frag";
+        private const string GeometryFileFormat = ".geom";
         
         private readonly int _handle;
         private bool _disposed;
@@ -29,6 +30,10 @@ namespace RecreatingGIF.Graphics
                 ShaderType.FragmentShader, 
                 Path + shaderName + FragmentFileFormat); 
             
+            var geometryShader = CreateShader(
+                ShaderType.GeometryShader, 
+                Path + shaderName + GeometryFileFormat); 
+            
             // =============
             // == Program ==
             // =============
@@ -37,11 +42,13 @@ namespace RecreatingGIF.Graphics
             
             GL.AttachShader(_handle, vertexShader);
             GL.AttachShader(_handle, fragmentShader);
+            GL.AttachShader(_handle, geometryShader);
             
             LinkProgram(_handle);
 
             GL.DetachShader(_handle, vertexShader);
             GL.DetachShader(_handle, fragmentShader);
+            GL.DetachShader(_handle, geometryShader);
             
             // =============
             // == Cleanup ==
@@ -49,6 +56,7 @@ namespace RecreatingGIF.Graphics
             
             GL.DeleteShader(vertexShader);
             GL.DeleteShader(fragmentShader);
+            GL.DeleteShader(geometryShader);
         }
 
         public int Handle => _handle;
@@ -76,6 +84,11 @@ namespace RecreatingGIF.Graphics
             GL.UniformMatrix4(location, true, ref data);
         }
 
+        public int GetUniformLocation(string uniform)
+        {
+            return GL.GetUniformLocation(_handle, uniform);
+        }
+
         private static int CreateShader(ShaderType shaderType, string path)
         {
             var shader = GL.CreateShader(shaderType);
@@ -89,7 +102,9 @@ namespace RecreatingGIF.Graphics
         {
             GL.CompileShader(shader);
             
-            GL.GetShader(shader, ShaderParameter.CompileStatus, out int code);
+            Console.WriteLine(GL.GetShaderInfoLog(shader));
+            
+            GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
             if (code != (int) All.True)
                 throw new Exception($"Error occurred whilst compiling Shader({shader})");
         }
@@ -98,7 +113,7 @@ namespace RecreatingGIF.Graphics
         {
             GL.LinkProgram(program);
             
-            GL.GetProgram(program, GetProgramParameterName.LinkStatus, out int code);
+            GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
             if (code != (int) All.True)
                 throw new Exception($"Error occurred whilst linking Program({program})");
         }
