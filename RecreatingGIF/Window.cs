@@ -18,9 +18,9 @@ namespace RecreatingGIF
             720,
             new GraphicsMode(
                 new ColorFormat(24),
-                24,
+                48,
                 8,
-                12),
+                8),
             "GIF Animation",
             GameWindowFlags.Default,
             DisplayDevice.Default,
