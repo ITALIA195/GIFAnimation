@@ -4,7 +4,7 @@ const vec3 TOP_COLOR = vec3(0.52f, 0.73f, 0.71f);
 const vec3 LEFT_COLOR = vec3(0.25f, 0.33f, 0.52f);
 const vec3 RIGHT_COLOR = vec3(0.90f, 0.89f, 0.69f);
 
-const float maxDistance = 100;
+const float maxDistance = 2 * 15;
 const float minHeight = 2;
 const float deltaHeight = 4;
 
@@ -24,9 +24,9 @@ out vec3 vColor;
 void sendOffset(vec3 amount) {
     float d = distance(centerOfAnimation, gl_in[0].gl_Position.xyz);
     float ratio = d / maxDistance;
-    
-    float multY = (1 - sin(animation)) * deltaHeight + minHeight; 
-    
+
+    float multY = (1 - sin(animation + 10 * ratio * ratio)) * deltaHeight + minHeight; 
+
     vec4 vertex = gl_in[0].gl_Position;
     vertex += vec4(amount, 0);
     vertex *= vec4(1, multY, 1, 1);
