@@ -15,7 +15,11 @@ namespace RecreatingGIF
         public Window() : base(
             1280,
             720,
-            GraphicsMode.Default,
+            new GraphicsMode(
+                new ColorFormat(24),
+                24,
+                8,
+                12),
             "GIF Animation",
             GameWindowFlags.Default,
             DisplayDevice.Default,
@@ -29,7 +33,8 @@ namespace RecreatingGIF
         protected override void OnLoad(EventArgs e)
         {
             GL.ClearColor(Color4.DarkSlateGray);
-            
+            GL.Enable(EnableCap.DepthTest);
+
             _rectangle = new Rectangle(new Shader("main"));
         }
 
