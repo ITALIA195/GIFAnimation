@@ -9,7 +9,7 @@ namespace RecreatingGIF.Graphics.Objects
         private readonly Shader _shader;
         private readonly Buffers _buffers;
 
-        private readonly float[] _vertices = new float[3 * NumberOfBoxes * NumberOfBoxes];
+        private readonly float[] _vertices = new float[2 * NumberOfBoxes * NumberOfBoxes];
         private int _shaderTimeLocation;
         private float _time;
 
@@ -34,9 +34,8 @@ namespace RecreatingGIF.Graphics.Objects
                 for (int y = -NumberOfBoxes; y < NumberOfBoxes; y += 2)
                 {
                     _vertices[i + 0] = x;
-                    _vertices[i + 1] = 0;
-                    _vertices[i + 2] = y;
-                    i += 3;
+                    _vertices[i + 1] = y;
+                    i += 2;
                 }
             }
             
@@ -55,7 +54,7 @@ namespace RecreatingGIF.Graphics.Objects
             _shader.Use();
             
             GL.BindVertexArray(_buffers.VertexArray);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
             
             GL.BindBuffer(BufferTarget.ArrayBuffer, _buffers.VertexBuffer);
