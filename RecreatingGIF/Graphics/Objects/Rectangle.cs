@@ -9,7 +9,7 @@ namespace RecreatingGIF.Graphics.Objects
         private readonly Shader _shader;
         private readonly Buffers _buffers;
 
-        private readonly float[] _vertices = new float[2 * NumberOfBoxes * NumberOfBoxes];
+        private readonly Vector2[] _vertices = new Vector2[NumberOfBoxes * NumberOfBoxes];
         private int _shaderTimeLocation;
         private float _time;
 
@@ -30,14 +30,8 @@ namespace RecreatingGIF.Graphics.Objects
 
             int i = 0;
             for (int x = -NumberOfBoxes; x < NumberOfBoxes; x += 2)
-            {
                 for (int y = -NumberOfBoxes; y < NumberOfBoxes; y += 2)
-                {
-                    _vertices[i + 0] = x;
-                    _vertices[i + 1] = y;
-                    i += 2;
-                }
-            }
+                    _vertices[i++] = new Vector2(x, y);
             
             // ==================
             // == Bind Buffers ==
@@ -45,7 +39,7 @@ namespace RecreatingGIF.Graphics.Objects
             
             // VBO (Vertices)
             GL.BindBuffer(BufferTarget.ArrayBuffer, _buffers.VertexBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vector2.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
             
             // ================
             // == Create VAO ==
@@ -54,7 +48,7 @@ namespace RecreatingGIF.Graphics.Objects
             _shader.Use();
             
             GL.BindVertexArray(_buffers.VertexArray);
-            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
             GL.EnableVertexAttribArray(0);
             
             GL.BindBuffer(BufferTarget.ArrayBuffer, _buffers.VertexBuffer);
