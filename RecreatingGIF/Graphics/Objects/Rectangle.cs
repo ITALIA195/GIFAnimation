@@ -29,13 +29,13 @@ namespace RecreatingGIF.Graphics.Objects
             // =================
 
             int i = 0;
-            for (float x = -NumberOfBoxes / 2f; x < NumberOfBoxes / 2f; x++)
+            for (int x = -NumberOfBoxes; x < NumberOfBoxes; x += 2)
             {
-                for (float y = -NumberOfBoxes / 2f; y < NumberOfBoxes / 2f; y++)
+                for (int y = -NumberOfBoxes; y < NumberOfBoxes; y += 2)
                 {
-                    _vertices[i + 0] = x * 2;
+                    _vertices[i + 0] = x;
                     _vertices[i + 1] = 0;
-                    _vertices[i + 2] = y * 2;
+                    _vertices[i + 2] = y;
                     i += 3;
                 }
             }
@@ -78,7 +78,6 @@ namespace RecreatingGIF.Graphics.Objects
 
 //            projection *= Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver2, Window.AspectRatio, 1f, 50f);
 
-            _shader.SetUniformValue("centerOfAnimation", new Vector3(0, 0, 0));
             _shader.SetUniformValue("projection", ref projection);
             _shader.SetUniformValue("view", ref view);
             _shader.SetUniformValue("model", ref model);
@@ -94,9 +93,9 @@ namespace RecreatingGIF.Graphics.Objects
 
         public void Update()
         {
-            _time += 0.03f;
-            
             _shader.SetUniformValue("animation", _time);
+            
+            _time = (_time + 0.005f) % 2;
         }
     }
 }
