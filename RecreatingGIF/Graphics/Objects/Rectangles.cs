@@ -1,19 +1,21 @@
+using System;
+using System.Drawing.Drawing2D;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
 namespace RecreatingGIF.Graphics.Objects
 {
-    public class Rectangle
+    public class Rectangles
     {
-        private const int NumberOfBoxes = 15;
+        private const int RectanglesPerSide = 15;
         private readonly Shader _shader;
         private readonly Buffers _buffers;
 
-        private readonly Vector2[] _vertices = new Vector2[NumberOfBoxes * NumberOfBoxes];
+        private readonly Vector2[] _vertices = new Vector2[RectanglesPerSide * RectanglesPerSide];
         private int _shaderTimeLocation;
         private float _time;
 
-        public Rectangle(Shader shader)
+        public Rectangles(Shader shader)
         {
             _shader = shader;
             _buffers = new Buffers(Buffer.VertexBuffer | Buffer.VertexArray);
@@ -29,10 +31,10 @@ namespace RecreatingGIF.Graphics.Objects
             // =================
 
             int i = 0;
-            for (int x = -NumberOfBoxes; x < NumberOfBoxes; x += 2)
-                for (int y = -NumberOfBoxes; y < NumberOfBoxes; y += 2)
+            for (int x = -RectanglesPerSide; x < RectanglesPerSide; x += 2)
+                for (int y = -RectanglesPerSide; y < RectanglesPerSide; y += 2)
                     _vertices[i++] = new Vector2(x, y);
-            
+
             // ==================
             // == Bind Buffers ==
             // ==================
@@ -81,7 +83,7 @@ namespace RecreatingGIF.Graphics.Objects
         public void Draw()
         {
             GL.BindVertexArray(_buffers.VertexArray);
-            GL.DrawArrays(PrimitiveType.Points, 0, NumberOfBoxes * NumberOfBoxes);
+            GL.DrawArrays(PrimitiveType.Points, 0, RectanglesPerSide * RectanglesPerSide);
         }
 
         public void Update()

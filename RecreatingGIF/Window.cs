@@ -10,7 +10,7 @@ namespace RecreatingGIF
 {
     public class Window : GameWindow
     {
-        private Rectangle _rectangle;
+        private Rectangles _rectangles;
         
         public Window() : base(
             1280,
@@ -35,7 +35,7 @@ namespace RecreatingGIF
             GL.ClearColor(0.98f, 0.98f, 0.98f, 1f);
             GL.Enable(EnableCap.DepthTest);
 
-            _rectangle = new Rectangle(new Shader("main"));
+            _rectangles = new Rectangles(new Shader("main"));
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -50,14 +50,14 @@ namespace RecreatingGIF
             if (keyboard.IsKeyDown(Key.Q))
                 Exit();
 
-            _rectangle.Update();
+            _rectangles.Update();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             
-            _rectangle.Draw();
+            _rectangles.Draw();
             
             GL.Flush();
             SwapBuffers();
