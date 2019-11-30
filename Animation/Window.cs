@@ -41,13 +41,7 @@ namespace Animation
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             var keyboard = Keyboard.GetState();
-            if (keyboard.IsKeyDown(Key.Escape))
-                Exit();
-            if ((keyboard.IsKeyDown(Key.AltLeft) ||
-                keyboard.IsKeyDown(Key.AltRight)) && keyboard.IsKeyDown(Key.F4))
-                Exit();
-
-            if (keyboard.IsKeyDown(Key.Q))
+            if (keyboard[Key.Escape] || keyboard[Key.Q] || keyboard[Key.LAlt] && keyboard[Key.F4])
                 Exit();
 
             _rectangles.Update();
