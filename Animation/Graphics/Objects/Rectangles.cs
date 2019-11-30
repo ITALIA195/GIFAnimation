@@ -24,53 +24,43 @@ namespace Animation.Graphics.Objects
 
         private void BindData()
         {
-            // =================
-            // == Create Data ==
-            // =================
-
+            // Create Data
             int i = 0;
             for (int x = -RectanglesPerSide; x < RectanglesPerSide; x += 2)
                 for (int y = -RectanglesPerSide; y < RectanglesPerSide; y += 2)
                     _vertices[i++] = new Vector2(x, y);
 
-            // ==================
-            // == Bind Buffers ==
-            // ==================
+            // Bind Buffers
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _buffers.VertexBuffer); // VBO (Vertices)
+            GL.BufferData(BufferTarget.ArrayBuffer, 
+                _vertices.Length * Vector2.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
             
-            // VBO (Vertices)
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _buffers.VertexBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vector2.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
-            
-            // ================
-            // == Create VAO ==
-            // ================
-            
+            // Create VAO
             _shader.Use();
             
             GL.BindVertexArray(_buffers.VertexArray);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
             GL.EnableVertexAttribArray(0);
-            
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, _buffers.VertexBuffer);
         }
 
         private void SendMatries()
         {
             _shader.Use();
+
+            const float scale = 1 / 50f;
+            var model = Matrix4.CreateScale(scale, scale, scale) *
+                        Matrix4.CreateRotationY(-MathHelper.PiOver4) *
+                        Matrix4.CreateRotationX(MathHelper.PiOver4);
+
+            var view = Matrix4.CreateTranslation(0, 0, -2f);
             
-            var projection = Matrix4.Identity;
-            var view = Matrix4.Identity;
-            var model = Matrix4.Identity;
-
-            const float scale = 0.04f;
-            model *= Matrix4.CreateScale(scale, scale, scale);
-
-            view *= Matrix4.CreateScale(1f / Window.AspectRatio, 1, 1);
-            view *= Matrix4.CreateRotationX(MathHelper.PiOver6);
-            view *= Matrix4.CreateRotationY(-MathHelper.PiOver4);
-
-//            projection *= Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver2, Window.AspectRatio, 1f, 50f);
-
+            var projection = Matrix4.CreatePerspectiveFieldOfView(
+                MathHelper.PiOver4, 
+                Window.AspectRatio, 
+                0.1f, 100f);
+            
             _shader.SetUniformValue("projection", ref projection);
             _shader.SetUniformValue("view", ref view);
             _shader.SetUniformValue("model", ref model);
@@ -78,17 +68,18 @@ namespace Animation.Graphics.Objects
             _shaderTimeLocation = _shader.GetUniformLocation("animation");
         }
 
-        public void Draw()
+        public void Render(object sender, FrameEventArgs e)
         {
             GL.BindVertexArray(_buffers.VertexArray);
             GL.DrawArrays(PrimitiveType.Points, 0, RectanglesPerSide * RectanglesPerSide);
         }
 
-        public void Update()
+        public void Update(object sender, FrameEventArgs e)
         {
-            _shader.SetUniformValue("animation", _time);
-            
-            _time = (_time + 0.005f) % 2;
+            const float timeStep = 0.75f;
+            _time = (_time + timeStep * (float)e.Time) % 2;
+
+            _shader.SetUniformValue(_shaderTimeLocation, _time);
         }
     }
 }

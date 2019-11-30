@@ -123,7 +123,7 @@ namespace Animation.Graphics
         
         public void SetUniformValue(int location, ref Matrix4 data)
         {
-            GL.UniformMatrix4(location, true, ref data);
+            GL.UniformMatrix4(location, false, ref data);
         }
 
         public int GetUniformLocation(string uniform)

@@ -9,8 +9,8 @@ const vec3 RIGHT_COLOR = vec3(0.90f, 0.89f, 0.69f);
 const float side = 15;
 const float squareSide = 2;
 const float maxDistance = side / 2 * squareSide * sqrt(2);
-const float minHeight = 2;
-const float deltaHeight = 4;
+const float minHeight = 4;
+const float deltaHeight = 5;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -30,7 +30,7 @@ void sendOffset(vec3 amount) {
     vec3 pos = gl_in[0].gl_Position.xyz;
     float d = sqrt(pos.x * pos.x + pos.z * pos.z); 
     float ratio = d / maxDistance;
-    float offset = cos(2 * PI * ratio / 2);
+    float offset = cos(PI * ratio);
     // offset should be 0 when ratio is 0
     // offset should be 0 when ratio is 1
 

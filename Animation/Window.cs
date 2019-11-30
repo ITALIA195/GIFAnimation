@@ -13,50 +13,47 @@ namespace Animation
         private Rectangles _rectangles;
         
         public Window() : base(
-            1280,
-            720,
-            new GraphicsMode(
-                new ColorFormat(24),
-                48,
-                8,
-                8),
+            1280, 720,
+            new GraphicsMode(new ColorFormat(24), 48, 8, 8),
             "GIF Animation",
             GameWindowFlags.Default,
             DisplayDevice.Default,
-            4,
-            3,
+            4, 3,
             GraphicsContextFlags.Default)
         {
             VSync = VSyncMode.On;
+
+            Load += OnLoad;
+            UpdateFrame += OnUpdateFrame;
         }
 
-        protected override void OnLoad(EventArgs e)
+        public static float AspectRatio => 1280f / 720f;
+
+        private void OnLoad(object sender, EventArgs e)
         {
             GL.ClearColor(0.98f, 0.98f, 0.98f, 1f);
             GL.Enable(EnableCap.DepthTest);
 
             _rectangles = new Rectangles(new Shader("main"));
-        }
-
-        protected override void OnUpdateFrame(FrameEventArgs e)
-        {
-            var keyboard = Keyboard.GetState();
-            if (keyboard[Key.Escape] || keyboard[Key.Q] || keyboard[Key.LAlt] && keyboard[Key.F4])
-                Exit();
-
-            _rectangles.Update();
+            this.RenderFrame += _rectangles.Render;
+            this.UpdateFrame += _rectangles.Update;
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             
-            _rectangles.Draw();
+            base.OnRenderFrame(e);
             
             GL.Flush();
             SwapBuffers();
         }
 
-        public static float AspectRatio => 1280f / 720f;
+        private void OnUpdateFrame(object sender, FrameEventArgs e)
+        {
+            var keyboard = Keyboard.GetState();
+            if (keyboard[Key.Escape] || keyboard[Key.Q] || keyboard[Key.LAlt] && keyboard[Key.F4])
+                Exit();
+        }
     }
 }
