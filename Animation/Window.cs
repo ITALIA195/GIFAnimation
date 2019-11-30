@@ -23,7 +23,7 @@ namespace Animation
             "GIF Animation",
             GameWindowFlags.Default,
             DisplayDevice.Default,
-            3,
+            4,
             3,
             GraphicsContextFlags.Default)
         {
