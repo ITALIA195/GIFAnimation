@@ -1,7 +1,7 @@
 using System;
 using OpenTK.Graphics.OpenGL4;
 
-namespace RecreatingGIF.Graphics
+namespace Animation.Graphics
 {
     public class Buffers
     {

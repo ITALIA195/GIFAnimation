@@ -4,7 +4,7 @@ using System.Text;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
-namespace RecreatingGIF.Graphics
+namespace Animation.Graphics
 {
     public class Shader : IDisposable
     {

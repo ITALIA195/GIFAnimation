@@ -1,9 +1,7 @@
-using System;
-using System.Drawing.Drawing2D;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
-namespace RecreatingGIF.Graphics.Objects
+namespace Animation.Graphics.Objects
 {
     public class Rectangles
     {

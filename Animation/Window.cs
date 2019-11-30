@@ -1,12 +1,12 @@
 using System;
+using Animation.Graphics;
+using Animation.Graphics.Objects;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
-using RecreatingGIF.Graphics;
-using RecreatingGIF.Graphics.Objects;
 
-namespace RecreatingGIF
+namespace Animation
 {
     public class Window : GameWindow
     {
