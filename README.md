@@ -4,4 +4,4 @@ This project is a try to recreate [@beesandbombs](https://github.com/beesandbomb
 
 ### Result
 
-![](endresult.gif)
+![](.github/endresult.gif)
