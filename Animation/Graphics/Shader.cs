@@ -12,8 +12,7 @@ namespace Animation.Graphics
         private const string VertexFileFormat = ".vert";
         private const string FragmentFileFormat = ".frag";
         private const string GeometryFileFormat = ".geom";
-        
-        private readonly int _handle;
+
         private bool _disposed;
 
         public Shader(string shaderName)
@@ -38,17 +37,17 @@ namespace Animation.Graphics
             // == Program ==
             // =============
 
-            _handle = GL.CreateProgram();
+            Program = GL.CreateProgram();
             
-            GL.AttachShader(_handle, vertexShader);
-            GL.AttachShader(_handle, fragmentShader);
-            GL.AttachShader(_handle, geometryShader);
+            GL.AttachShader(Program, vertexShader);
+            GL.AttachShader(Program, fragmentShader);
+            GL.AttachShader(Program, geometryShader);
             
-            LinkProgram(_handle);
+            LinkProgram(Program);
 
-            GL.DetachShader(_handle, vertexShader);
-            GL.DetachShader(_handle, fragmentShader);
-            GL.DetachShader(_handle, geometryShader);
+            GL.DetachShader(Program, vertexShader);
+            GL.DetachShader(Program, fragmentShader);
+            GL.DetachShader(Program, geometryShader);
             
             // =============
             // == Cleanup ==
@@ -59,19 +58,18 @@ namespace Animation.Graphics
             GL.DeleteShader(geometryShader);
         }
 
-        public int Handle => _handle;
-        public int Program => _handle;
-
+        public int Program { get; }
+        
         public void Use() => UseProgram();
         public void Bind() => UseProgram();
         public void UseProgram()
         {
-            GL.UseProgram(_handle);
+            GL.UseProgram(Program);
         }
 
         public int GetAttribLocation(string attrib)
         {
-            return GL.GetAttribLocation(_handle, attrib);
+            return GL.GetAttribLocation(Program, attrib);
         }
 
         public void SetUniformValue(string attrib, float data)
@@ -128,7 +126,7 @@ namespace Animation.Graphics
 
         public int GetUniformLocation(string uniform)
         {
-            return GL.GetUniformLocation(_handle, uniform);
+            return GL.GetUniformLocation(Program, uniform);
         }
 
         private static int CreateShader(ShaderType shaderType, string path)
@@ -166,15 +164,16 @@ namespace Animation.Graphics
 
         private static string ReadFile(string file)
         {
-            using (var fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var sr = new StreamReader(fs, Encoding.UTF8))
-                return sr.ReadToEnd();
+            using var fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using var sr = new StreamReader(fs, Encoding.UTF8);
+            
+            return sr.ReadToEnd();
         }
 
         public void Dispose()
         {
             if (!_disposed)
-                GL.DeleteProgram(_handle);
+                GL.DeleteProgram(Program);
             
             _disposed = true;
         }

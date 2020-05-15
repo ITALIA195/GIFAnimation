@@ -4,8 +4,8 @@ namespace Animation
     {
         public static void Main()
         {
-            using (var wnd = new Window())
-                wnd.Run();
+            using var wnd = new Window();
+            wnd.Run();
         }
     }
 }

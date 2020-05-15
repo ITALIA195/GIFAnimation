@@ -42,8 +42,6 @@ namespace Animation.Graphics.Objects
             GL.BindVertexArray(_buffers.VertexArray);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
             GL.EnableVertexAttribArray(0);
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _buffers.VertexBuffer);
         }
 
         private void SendMatrices()
