@@ -1,6 +1,6 @@
 using System;
-using Animation.Graphics;
 using Animation.Graphics.Objects;
+using Hawk.Framework;
 using OpenToolkit.Graphics.OpenGL4;
 using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
@@ -37,7 +37,12 @@ namespace Animation
             GL.ClearColor(0.98f, 0.98f, 0.98f, 1f);
             GL.Enable(EnableCap.DepthTest);
 
-            _rectangles = new Rectangles(new Shader("main"));
+            var program = new ProgramBuilder()
+                .WithFileShader(ShaderType.VertexShader, "./Graphics/Shaders/main.vert")
+                .WithFileShader(ShaderType.FragmentShader, "./Graphics/Shaders/main.frag")
+                .WithFileShader(ShaderType.GeometryShader, "./Graphics/Shaders/main.geom")
+                .Build();
+            _rectangles = new Rectangles(program);
             RenderFrame += _rectangles.Render;
             UpdateFrame += _rectangles.Update;
         }

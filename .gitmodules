@@ -1,0 +1,3 @@
+[submodule "Hawk.Framework"]
+	path = Hawk.Framework
+	url = https://github.com/ITALIA195/Framework

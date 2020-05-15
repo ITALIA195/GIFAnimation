@@ -1,3 +1,4 @@
+using Hawk.Framework;
 using OpenToolkit.Graphics.OpenGL4;
 using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
@@ -7,17 +8,17 @@ namespace Animation.Graphics.Objects
     public class Rectangles
     {
         private const int RectanglesPerSide = 15;
-        private readonly Shader _shader;
-        private readonly Buffers _buffers;
+        private readonly Program _program;
+        private readonly GLObjects _buffers;
 
         private readonly Vector2[] _vertices = new Vector2[RectanglesPerSide * RectanglesPerSide];
         private int _shaderTimeLocation;
         private float _time;
 
-        public Rectangles(Shader shader)
+        public Rectangles(Program program)
         {
-            _shader = shader;
-            _buffers = new Buffers(Buffer.VertexBuffer | Buffer.VertexArray);
+            _program = program;
+            _buffers = new GLObjects(GLObject.VertexBuffer | GLObject.VertexArray);
             
             BindData();
             SendMatrices();
@@ -37,7 +38,7 @@ namespace Animation.Graphics.Objects
                 _vertices.Length * Vector2.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
             
             // Create VAO
-            _shader.Use();
+            _program.Bind();
             
             GL.BindVertexArray(_buffers.VertexArray);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
@@ -46,7 +47,7 @@ namespace Animation.Graphics.Objects
 
         private void SendMatrices()
         {
-            _shader.Use();
+            _program.Bind();
 
             const float scale = 1 / 50f;
             var model = Matrix4.CreateScale(scale, scale, scale) *
@@ -60,11 +61,11 @@ namespace Animation.Graphics.Objects
                 Window.AspectRatio, 
                 0.1f, 100f);
             
-            _shader.SetUniformValue("projection", ref projection);
-            _shader.SetUniformValue("view", ref view);
-            _shader.SetUniformValue("model", ref model);
+            _program.SetUniformValue("projection", ref projection);
+            _program.SetUniformValue("view", ref view);
+            _program.SetUniformValue("model", ref model);
 
-            _shaderTimeLocation = _shader.GetUniformLocation("animation");
+            _shaderTimeLocation = _program.GetUniformLocation("animation");
         }
 
         public void Render(FrameEventArgs e)
@@ -78,7 +79,7 @@ namespace Animation.Graphics.Objects
             const float timeStep = 0.75f;
             _time = (_time + timeStep * (float)e.Time) % 2;
 
-            _shader.SetUniformValue(_shaderTimeLocation, _time);
+            _program.SetUniformValue(_shaderTimeLocation, _time);
         }
     }
 }
