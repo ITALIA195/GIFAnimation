@@ -1,5 +1,6 @@
-using OpenTK;
-using OpenTK.Graphics.OpenGL4;
+using OpenToolkit.Graphics.OpenGL4;
+using OpenToolkit.Mathematics;
+using OpenToolkit.Windowing.Common;
 
 namespace Animation.Graphics.Objects
 {
@@ -19,15 +20,15 @@ namespace Animation.Graphics.Objects
             _buffers = new Buffers(Buffer.VertexBuffer | Buffer.VertexArray);
             
             BindData();
-            SendMatries();
+            SendMatrices();
         }
 
         private void BindData()
         {
             // Create Data
-            int i = 0;
-            for (int x = -RectanglesPerSide; x < RectanglesPerSide; x += 2)
-                for (int y = -RectanglesPerSide; y < RectanglesPerSide; y += 2)
+            var i = 0;
+            for (var x = -RectanglesPerSide; x < RectanglesPerSide; x += 2)
+                for (var y = -RectanglesPerSide; y < RectanglesPerSide; y += 2)
                     _vertices[i++] = new Vector2(x, y);
 
             // Bind Buffers
@@ -45,7 +46,7 @@ namespace Animation.Graphics.Objects
             GL.BindBuffer(BufferTarget.ArrayBuffer, _buffers.VertexBuffer);
         }
 
-        private void SendMatries()
+        private void SendMatrices()
         {
             _shader.Use();
 
@@ -68,13 +69,13 @@ namespace Animation.Graphics.Objects
             _shaderTimeLocation = _shader.GetUniformLocation("animation");
         }
 
-        public void Render(object sender, FrameEventArgs e)
+        public void Render(FrameEventArgs e)
         {
             GL.BindVertexArray(_buffers.VertexArray);
             GL.DrawArrays(PrimitiveType.Points, 0, RectanglesPerSide * RectanglesPerSide);
         }
 
-        public void Update(object sender, FrameEventArgs e)
+        public void Update(FrameEventArgs e)
         {
             const float timeStep = 0.75f;
             _time = (_time + timeStep * (float)e.Time) % 2;

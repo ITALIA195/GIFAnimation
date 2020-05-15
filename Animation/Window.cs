@@ -1,42 +1,45 @@
 using System;
 using Animation.Graphics;
 using Animation.Graphics.Objects;
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL4;
-using OpenTK.Input;
+using OpenToolkit.Graphics.OpenGL4;
+using OpenToolkit.Mathematics;
+using OpenToolkit.Windowing.Common;
+using OpenToolkit.Windowing.Common.Input;
+using OpenToolkit.Windowing.Desktop;
 
 namespace Animation
 {
     public class Window : GameWindow
     {
+        private const int BaseWidth = 1280;
+        private const int BaseHeight = 720;
         private Rectangles _rectangles;
-        
-        public Window() : base(
-            1280, 720,
-            new GraphicsMode(new ColorFormat(24), 48, 8, 8),
-            "GIF Animation",
-            GameWindowFlags.Default,
-            DisplayDevice.Default,
-            4, 3,
-            GraphicsContextFlags.Default)
-        {
-            VSync = VSyncMode.On;
 
-            Load += OnLoad;
-            UpdateFrame += OnUpdateFrame;
+        public Window() : base(GameWindowSettings.Default, WindowSettings)
+        {
+            Load += OnInitialized;
+            UpdateFrame += OnUpdate;
         }
+
+        private static NativeWindowSettings WindowSettings =>
+            new NativeWindowSettings
+            {
+                Title = "GIF Animation",
+                Size = new Vector2i(BaseWidth, BaseHeight),
+                APIVersion = new Version(4, 6),
+                Profile = ContextProfile.Core
+            };
 
         public static float AspectRatio => 1280f / 720f;
 
-        private void OnLoad(object sender, EventArgs e)
+        private void OnInitialized()
         {
             GL.ClearColor(0.98f, 0.98f, 0.98f, 1f);
             GL.Enable(EnableCap.DepthTest);
 
             _rectangles = new Rectangles(new Shader("main"));
-            this.RenderFrame += _rectangles.Render;
-            this.UpdateFrame += _rectangles.Update;
+            RenderFrame += _rectangles.Render;
+            UpdateFrame += _rectangles.Update;
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -49,11 +52,16 @@ namespace Animation
             SwapBuffers();
         }
 
-        private void OnUpdateFrame(object sender, FrameEventArgs e)
+        private void OnUpdate(FrameEventArgs e)
         {
-            var keyboard = Keyboard.GetState();
-            if (keyboard[Key.Escape] || keyboard[Key.Q] || keyboard[Key.LAlt] && keyboard[Key.F4])
-                Exit();
+            if (
+                KeyboardState[Key.Escape] ||
+                KeyboardState[Key.Q] ||
+                KeyboardState[Key.LAlt] && KeyboardState[Key.F4]
+            )
+            {
+                Close();
+            }
         }
     }
 }
