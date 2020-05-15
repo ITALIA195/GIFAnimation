@@ -14,6 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Hawk.Framework\Hawk.Framework\Hawk.Framework.csproj" />
+    <ProjectReference Include="..\Framework\Hawk.Framework\Hawk.Framework.csproj" />
   </ItemGroup>
 </Project>
