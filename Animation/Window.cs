@@ -17,8 +17,8 @@ namespace Animation
 
         public Window() : base(GameWindowSettings.Default, WindowSettings)
         {
-            Load += OnInitialized;
-            UpdateFrame += OnUpdate;
+            Load += OnLoad;
+            KeyDown += OnKeyDown;
         }
 
         private static NativeWindowSettings WindowSettings =>
@@ -32,7 +32,7 @@ namespace Animation
 
         public static float AspectRatio => 1280f / 720f;
 
-        private void OnInitialized()
+        private new void OnLoad()
         {
             GL.ClearColor(0.98f, 0.98f, 0.98f, 1f);
             GL.Enable(EnableCap.DepthTest);
@@ -52,13 +52,11 @@ namespace Animation
             SwapBuffers();
         }
 
-        private void OnUpdate(FrameEventArgs e)
+        private new void OnKeyDown(KeyboardKeyEventArgs e)
         {
-            if (
-                KeyboardState[Key.Escape] ||
-                KeyboardState[Key.Q] ||
-                KeyboardState[Key.LAlt] && KeyboardState[Key.F4]
-            )
+            if (e.Alt && e.Key == Key.F4 ||
+                e.Key == Key.Escape ||
+                e.Key == Key.Q)
             {
                 Close();
             }
