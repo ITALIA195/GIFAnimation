@@ -1,6 +1,6 @@
 using System;
 using Animation.Graphics.Objects;
-using Hawk.Framework;
+using Framework.Shaders;
 using OpenToolkit.Graphics.OpenGL4;
 using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;

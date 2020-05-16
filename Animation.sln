@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animation", "Animation\Animation.csproj", "{FB2D518A-8D1B-4F11-B8EE-A7CED544CF33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hawk.Framework", "Framework\Hawk.Framework\Hawk.Framework.csproj", "{C9CE3490-8FB3-455A-89D2-A373D9F429BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework", "Framework\Framework\Framework.csproj", "{FD01149F-5078-40CD-A3E8-EDC82BFB6FE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{FB2D518A-8D1B-4F11-B8EE-A7CED544CF33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB2D518A-8D1B-4F11-B8EE-A7CED544CF33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB2D518A-8D1B-4F11-B8EE-A7CED544CF33}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9CE3490-8FB3-455A-89D2-A373D9F429BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9CE3490-8FB3-455A-89D2-A373D9F429BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9CE3490-8FB3-455A-89D2-A373D9F429BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9CE3490-8FB3-455A-89D2-A373D9F429BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD01149F-5078-40CD-A3E8-EDC82BFB6FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD01149F-5078-40CD-A3E8-EDC82BFB6FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD01149F-5078-40CD-A3E8-EDC82BFB6FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD01149F-5078-40CD-A3E8-EDC82BFB6FE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

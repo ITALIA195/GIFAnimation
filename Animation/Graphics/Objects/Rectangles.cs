@@ -1,4 +1,5 @@
-using Hawk.Framework;
+using Framework;
+using Framework.Shaders;
 using OpenToolkit.Graphics.OpenGL4;
 using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
@@ -8,8 +9,8 @@ namespace Animation.Graphics.Objects
     public class Rectangles
     {
         private const int RectanglesPerSide = 15;
+        private readonly GLObjects _buffers = new GLObjects();
         private readonly Program _program;
-        private readonly GLObjects _buffers;
 
         private readonly Vector2[] _vertices = new Vector2[RectanglesPerSide * RectanglesPerSide];
         private int _shaderTimeLocation;
@@ -18,7 +19,6 @@ namespace Animation.Graphics.Objects
         public Rectangles(Program program)
         {
             _program = program;
-            _buffers = new GLObjects(GLObject.VertexBuffer | GLObject.VertexArray);
             
             BindData();
             SendMatrices();
